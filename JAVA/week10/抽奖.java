@@ -6,11 +6,11 @@ public class Lotto {
 		String[][] prize = new String[10][];
 		prize[0] = new String[] { "apple", "benench", "thinkpad", "iphone" };
 		String str = null;
-		int k = 4;
+		int k = 4,c = 0;
 		while (i <= 3) {
 			j = 0;
 			str = prize[i][(int) (Math.random() * (k--))];
-			System.out.println(str);
+			System.out.println("第"+c+"次抽到的奖品为:"+str);
 			//错误代码//prize[i+1] = new String[prize[i].length];
 			prize[i+1] = new String[prize[i].length-1];
 			/*
@@ -25,6 +25,7 @@ public class Lotto {
 				}
 			}
 			i++;
+			c++;
 		}
 
 	}
