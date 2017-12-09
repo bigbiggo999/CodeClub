@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>test2</title>
+  <style type="text/css">
+  body {
+    background-color: #ccc;
+  }
+  *[title]{color: red;} /*所有设置了title属性的标签,应用这个style*/
+  p em {color: green;} /*后代选择器,所有p标签里面的em标签,这个em标签不用紧挨着p标签*/
+  p >em {color:yellow;} /*p后面紧邻着的包含的em*/
+  p+em{}/* p后面紧邻着的em*/
+  a:link {color: black;}
+  a.red:visited {color: yellow;} /*所有class为red的a标签,visited代表该超链接被访问过以后颜色改变为这个style*/
+  a:hover {color:blue;}
+  </style>
+</head>
+
+<body>
+  <!--
+	<div style="background-color: rgba(255,0,0,0.2); font-size: 40px">
+	<p style="text-indent: 2em;font-size: 2em;letter-spacing: 30px;font-style: italic;font-weight: bold;text-shadow: 2px 3px 4px;">test</p>
+	</div>
+-->
+  <p style="padding-bottom: 50px;position: relative;left: 20px;">第一段</p>
+  <p title="hi!">第二段</p>
+  <a href="https://www.google.com" target="_blank" class="red">google</a>
+  <a class="red" href="https://www.baidu.com" target="_blank">baidu</a>
+  <div>
+    <table style="font-size: 40px; caption-side: top;border: 1px solid blue; border-collapse: collapse;">
+      <caption style="text-align: center;">what!!!</caption>
+      <th colspan="2" style="border: 1px solid blue; padding: 80px">this</th>
+      <tr>
+        <td style="border: 1px solid blue;padding: 80px;margin: 80px">本周</td>
+        <td style="border: 1px solid blue;padding: 80px;">下周</td>
+      </tr>
+    </table>
+  </div>
+</body>
+
+</html>
