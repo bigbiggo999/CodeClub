@@ -62,10 +62,34 @@ public class Solution {
     }
 
 
+    public static int lengthOfLongestSubstring(String s) {
+        /*
+        abcbadef
+         */
+        int max = 0,beginIndex = 0, length = 0;
+        StringBuilder str = new StringBuilder("");
+        for(int i = 0; i < s.length(); i++){
+            if(!str.toString().contains(s.substring(i,i+1))){
+                str.append(s.charAt(i));
+                length++;
+            }else{
+                int repeatIndex = str.indexOf(String.valueOf(s.charAt(i)));
+                str = new StringBuilder(str.substring(repeatIndex+1));
+                str.append(s.charAt(i));
+                if (length>max){
+                    max = length;
+                }
+                length = str.length();
+            }
+        }
+        if (length>max) max = length;
+        return max;
+    }
 
     public static void main(String[] args) {
-        Integer[] a = new Integer[]{1,2,3};
-
+//        Integer[] a = new Integer[]{1,2,3};
+        String s = "ee";
+        System.out.println(lengthOfLongestSubstring(s));
     }
 }
 
