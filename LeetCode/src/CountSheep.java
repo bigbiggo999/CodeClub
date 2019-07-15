@@ -8,7 +8,7 @@ import java.util.Map;
 public class CountSheep {
     public static void main(String[] args) {
         //第几年之后的羊?
-        getSheep(12);
+        getSheep(20);
     }
 
 
@@ -32,12 +32,12 @@ public class CountSheep {
                 } else if (age >= 3 && age <= 7) {
                     all.put(order,age);
                     map.put(++maxOrder, 1);
-                    System.out.println("今年是第"+year+"年, "+"编号为"+order+",年龄为"+age+"的羊,"+"新生编号为"+maxOrder+"的羊");
+//                    System.out.println("今年是第"+year+"年, "+"编号为"+order+",年龄为"+age+"的羊,"+"新生编号为"+maxOrder+"的羊");
                 }else if(age>7 && age<=9){
                     all.put(order,age);
                 }
                 else if (age==10){
-                    System.out.println("今年是第"+year+"年,"+"编号为"+order+"的羊将去世,年龄为 "+age);
+//                    System.out.println("今年是第"+year+"年,"+"编号为"+order+"的羊将去世,年龄为 "+age);
                     dead.put(order,age);
                 }
             }
@@ -48,7 +48,7 @@ public class CountSheep {
             year++;
         }
         System.out.println("总共有"+all.size()+"只羊");
-        System.out.println(all.toString());
+//        System.out.println(all.toString());
         return 0;
     }
 }
