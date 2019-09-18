@@ -7,6 +7,416 @@
 
 
 
+
+
+
+
+
+
+###结构体通过sort排序
+```cpp
+
+//重载运算符
+typedef struct node{
+    int num;
+    int value;
+    bool operator < (const node& N) const{
+        return value>N.value;
+    }
+}Node;
+
+int n;
+vector<string> E[maxn];
+vector<Node> shop;
+int main(){
+    
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    cin>>n;
+    shop.resize(n);
+    UP(n){
+        cin>>shop[i].num>>shop[i].value;
+    }
+    sort(shop.begin(), shop.end());
+    cout<<shop[0].num<<" "<<shop[0].value;
+    return 0;
+}
+
+//结构体外定义compare函数
+
+typedef struct node{
+    int num;
+    int value;
+    
+}Node;
+bool nodeComparsion(Node node1,Node node2){
+    return node1.value>node2.value;
+}
+
+int n;
+vector<string> E[maxn];
+vector<Node> shop;
+int main(){
+    
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    cin>>n;
+    shop.resize(n);
+//    int num,value;
+    UP(n){
+        cin>>shop[i].num>>shop[i].value;
+    }
+    sort(shop.begin(), shop.end(), nodeComparsion);
+    cout<<shop[0].num<<" "<<shop[0].value;
+    
+    
+    
+    return 0;
+}
+```
+
+
+
+###读取一行字符串按照空格分割
+```cpp
+cin.ignore();
+    UP(n){
+        getline(cin,temp);
+        istringstream is(temp);
+        while (is>>temp) {
+            E[i].push_back(temp);
+        }
+    }
+```
+
+###从文件读入和输出到文件
+```cpp
+ofstream fout("sum.txt");
+ifstream fin("in.txt");
+int main(){
+//    ios::sync_with_stdio(false);
+    int a,b;
+    fin>>a >>b;
+    fout<< "hello"<<a<<b<<endl;
+    return 0;
+}
+
+```
+
+
+###交通规划
+```cpp
+#include <bits/stdc++.h>
+typedef unsigned int uint32_t;
+#define UP(x) for(uint32_t i=0;i<x;i++)
+using namespace std;
+
+const int maxn = 205;
+vector<pair<int,int>> E[maxn];
+int n,m;
+int d[maxn],inq[maxn],fee[maxn];
+void init(){
+    UP(n+1){
+        E[i].clear();
+        d[i] = INT_MAX;
+        fee[i] = INT_MAX;
+        inq[i] = 0;
+    }
+}
+
+int main(){
+    cin>>n>>m;
+    init();
+    UP(m){
+        int x,y,z;
+        scanf("%d%d%d",&x,&y,&z);
+        E[x].push_back(make_pair(y, z));
+        E[y].push_back(make_pair(x, z));
+    }
+    int s = 1;
+    queue<int> Q;
+    Q.push(s);
+    inq[s] = 1;
+    d[s] = 0;
+    fee[s] = 0;
+    while (!Q.empty()) {
+        int now = Q.front();
+        Q.pop();
+        inq[now] = 0;
+        UP(E[now].size()){
+            int v = E[now][i].first;
+            if(d[v]>d[now] + E[now][i].second){
+                d[v] = d[now] + E[now][i].second;
+                fee[v] = E[now][i].second;
+                if(inq[v]==1) continue;
+                inq[v] = 1;
+                Q.push(v);
+            }else if(d[v] == d[now] + E[now][i].second){
+                fee[v] = min(fee[v], E[now][i].second);
+            }
+        }
+    }
+    int sum = 0;
+    for(int i = 1;i<=n;i++){
+        sum+=fee[i];
+    }
+    cout<<sum<<endl;
+}
+```
+
+###最大的矩形
+```cpp
+#include <bits/stdc++.h>
+#include <algorithm>
+typedef unsigned int uint32_t;
+#define UP(x) for(uint32_t i=0;i<x;i++)
+using namespace std;
+
+
+
+vector<int> arr;
+vector<vector<int>> mat;
+int main(){
+    ios::sync_with_stdio(false);
+    int n=0;
+
+    cin>>n;
+    arr.resize(n);
+    UP(n){
+        cin>>arr[i];
+    }
+    mat.resize(n);
+    UP(n){
+        mat[i].resize(n);
+    }
+    UP(n){
+        int min_height = arr[i];
+        for(int j=i;j<n;j++){
+            mat[i][j] = (min_height = min(arr[j],min_height));
+        }
+    }
+    int res = 0;
+    
+    UP(n){
+        for(int j=i;j<n;j++){
+            res = max(static_cast<uint32_t>(res), static_cast<uint32_t>(mat[i][j]*(j-i+1)));
+        }
+    }
+    cout<<res;
+    return 0;
+}
+```
+
+###raid5磁盘恢复
+
+```cpp
+#include<bits/stdc++.h>
+#define UP(x) for(uint32_t i=0;i<x;i++)
+typedef unsigned int uint32_t;
+using namespace std;
+uint32_t len = 0;
+//异或操作
+char getc(char c){
+    if(c<10)
+        return c+'0';
+    else if(c<=16)
+        return c+'A'-10;
+    else if(c<='9')
+        return c-'0';
+    else if(c<='F')
+        return c-'A'+10;
+    return ' ';
+}
+void yh(string &a,string b){
+    UP(8){
+        a[i]=getc(getc(a[i])^getc(b[i]));
+    }
+}
+void getdata(string dskd[],uint32_t n,uint32_t s,uint32_t l,uint32_t r){
+    uint32_t level=r/((n-1)*s);                //获取读取的数据层数
+    uint32_t curp=(n-level%n)-1;            //获取读取的数据层数P块所在位置
+    uint32_t blk=level*s+r%s;                //获取数据所在硬盘的块索引
+    uint32_t disk=r%((n-1)*s)/s+curp+1;        //获取读取的数据所在硬盘索引
+    disk=disk%n;
+    if(len<blk*8+8||len==0){                //如果获取的长度超过了硬盘数据长度，直接输出减号退出
+        cout<<"-"<<endl;
+        return;
+    }
+    if(dskd[disk].length()!=0)                 //如果当前盘存在，直接输出
+        cout<<dskd[disk].substr(blk*8,8)<<endl;
+    else if(dskd[disk].length()==0&&n-l==1){ //如果当前盘缺失，且可以恢复，则通过异或读取对应的数据
+        string str="00000000";
+        UP(n){
+            if(i!=disk)
+                yh(str,dskd[i].substr(blk*8,8));
+        }
+        cout<<str<<endl;
+    }else
+        cout<<"-"<<endl;                     //如果当前盘缺失且不可以恢复，输出减号。
+}
+int main(){
+    ios::sync_with_stdio(false);
+    uint32_t n,s,l; //n个磁盘, s个块为一个条带,l个完整
+    cin>>n>>s>>l;
+    string dskd[1010];
+    uint32_t dpos;
+    UP(l){
+        cin>>dpos;
+        cin>>dskd[dpos];
+    }
+    uint32_t m;
+    cin>>m;
+    uint32_t a[1000];
+    UP(m){
+        cin>>a[i];
+    }
+    UP(n){
+        if(dskd[i].length()!=0){
+            len = dskd[i].length();
+            break;
+        }
+    }
+    UP(m){
+        getdata(dskd,n,s,l,a[i]);
+    }
+    return 0;
+}
+
+```
+
+###24点游戏
+
+```cpp
+#include <iostream>
+#include <string>
+#include <stack>
+#include <vector>
+#include <map>
+
+
+
+using namespace std;
+
+int calculate(int a,int b,char c);
+
+int main(){
+    int n;
+    cin>>n;
+    
+    string line;
+    string temp;
+    stack<char> stk;
+    stack<int> result_stk;
+    vector<int> result;
+
+    char topChar;
+    while(n>=1){
+        cin>>line;
+        temp = "";
+        for(auto c:line){
+            if(stk.empty()) topChar = NULL;
+            else topChar = stk.top();
+            switch (c) {
+                case '+':
+                    if(stk.empty()) stk.push(c);
+                    else{
+                        temp+=topChar;
+                        stk.pop();
+                        stk.push('+');
+                    }
+                    break;
+                case '-':
+                    if(stk.empty()) stk.push(c);
+                    else{
+                        temp+=topChar;
+                        stk.pop();
+                        stk.push('-');
+                    }
+                    break;
+                case 'x':
+                        if(stk.empty()) stk.push('*');
+                        else if(topChar=='-'||topChar=='+'){
+                            stk.push('*');
+                        }else{
+                            temp+=topChar;
+                            stk.pop();
+                            stk.push('*');
+                        }
+                        break;
+                case '/':
+                    if(stk.empty()) stk.push('/');
+                    else if(topChar=='-'||topChar=='+'){
+                        stk.push('/');
+                    }else{
+                        temp+=topChar;
+                        stk.pop();
+                        stk.push('/');
+                    }
+                    break;
+                default:
+                    temp+=c;
+                    break;
+            }
+        }
+        while(!stk.empty()){
+            temp+=stk.top();
+            stk.pop();
+        }
+        for(auto c:temp){
+            if(c>='1'&&c<='9'){
+                result_stk.push(c-'0');
+            }else{
+                int b = result_stk.top();
+                result_stk.pop();
+                int a = result_stk.top();
+                result_stk.pop();
+                result_stk.push(calculate(a, b, c));
+            }
+        }
+        result.push_back(result_stk.top());
+        result_stk.pop();
+        n--;
+    }
+    for(int i=0;i<result.size();i++){
+        if(result[i]==24) cout<<"Yes"<<endl;
+        else cout<<"No"<<endl;
+    }
+
+}
+
+
+int calculate(int a,int b,char c){
+    switch (c) {
+        case '-':
+            return a-b;
+            break;
+        case '+':
+            return a+b;
+            break;
+        case '*':
+            return a*b;
+            break;
+        case '/':
+            return a/b;
+            break;
+        default:
+            return 0;
+            break;
+    }
+}
+
+
+
+//    map<char, int > operations;
+//    operations.insert(pair<char,int>('+', 1));
+//    operations.insert(pair<char,int>('-', 1));
+//    operations.insert(pair<char,int>('x', 2));
+//    operations.insert(pair<char,int>('/', 2));
+```
+
+
+
+
 ###[字符串匹配算法](https://blog.csdn.net/starstar1992/article/details/54913261/)
 
 ```cpp
